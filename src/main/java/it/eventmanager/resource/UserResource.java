@@ -128,7 +128,9 @@ public class UserResource extends PanacheEntityBase {
     @Operation(summary = "Get User with most Attended events" , description = "return the user with the most attended events")
     public Response getUserWithMostAttendedEvents() throws UserCustomException {
         try{
-            User user = UserDAO.findUserWithMostAttendedEvents();
+            User user = new User();
+            //TODO with criteria query the method findUserWithMostAttendedEvents();
+            //User user = UserDAO.findUserWithMostAttendedEvents();
             return Response.ok(UserMapper.toDTO(user)).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();

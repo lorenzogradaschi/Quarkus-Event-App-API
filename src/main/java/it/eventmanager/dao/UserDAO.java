@@ -35,78 +35,13 @@ public class UserDAO {
         return User.findById(id);
     }
 
-    public boolean isUserGreaterThan18(User user, int age){
-        return user.getAge() >= 18;
-    }
+    public boolean isUserGreaterThan18(User user, int age){ return user.getAge() >= 18; }
 
     @Transactional
-    public void persistUser(User user) {
-        user.persist();
-    }
+    public void persistUser(User user) { user.persist();}
 
     @Transactional
-    public void deleteUser(User user) {
-        user.delete();
-    }
-
-    public static User findUserWithMostAttendedEvents() {
-        //TODO usare i criteria query
-        return (User) getEntityManager()
-                .createNativeQuery(" SELECT u.* FROM users u  JOIN event_participants ep ON u.id = ep.user_id GROUP BY u.id ORDER BY COUNT(ep.event_id) DESC LIMIT 1 ", User.class)
-                .getSingleResult();
-    }
-
-    //TODO USARE GLI STREAM !
-
-    /*
-     * // Intermediate Operations
-     * stream.filter()           // Keep elements that match condition
-     * stream.map()              // Transform each element individually
-     * stream.flatMap()          // Flatten nested stream elements
-     * stream.distinct()         // Remove all duplicate elements
-     * stream.sorted()           // Sort elements in natural order
-     * stream.sorted(Comparator) // Sort elements with custom order
-     * stream.peek()             // Perform action without changing stream
-     * stream.limit(n)           // Keep only first n elements
-     * stream.skip(n)            // Ignore first n elements
-     * stream.mapToInt()         // Convert stream to IntStream
-     * stream.mapToDouble()      // Convert stream to DoubleStream
-     * stream.mapToLong()        // Convert stream to LongStream
-     * stream.boxed()            // Box primitives into wrapper objects
-     *
-     * // Terminal Operations
-     * stream.forEach()          // Perform action on each element
-     * stream.forEachOrdered()   // Ordered version of forEach()
-     * stream.toArray()          // Convert stream to array
-     * stream.reduce()           // Combine elements into single result
-     * stream.collect()          // Gather stream into collection/result
-     * stream.min()              // Smallest element using comparator
-     * stream.max()              // Largest element using comparator
-     * stream.count()            // Number of elements in stream
-     * stream.anyMatch()         // Any element matches condition?
-     * stream.allMatch()         // All elements match condition?
-     * stream.noneMatch()        // No elements match condition?
-     * stream.findFirst()        // Get first element if present
-     * stream.findAny()          // Get any element if present
-     *
-     * // Stream Creation (Factories)
-     * Stream.of()               // Create stream from given values
-     * Stream.empty()            // Create an empty stream
-     * Stream.generate()         // Create infinite stream (supplier)
-     * Stream.iterate()          // Create stream from seed/function
-     * Arrays.stream()           // Create stream from array
-     * Collection.stream()       // Stream from list/set/collection
-     * IntStream.range()         // Range of int values
-     * IntStream.rangeClosed()   // Inclusive range of ints
-     *
-     * // Closing Streams
-     * stream.close()            // Manually close stream resource
-     * stream.isParallel()       // Check if stream is parallel
-     * stream.parallel()         // Convert to parallel stream
-     * stream.sequential()       // Convert to sequential stream
-     * stream.unordered()        // Remove encounter order if present
-     */
-
+    public void deleteUser(User user) { user.delete(); }
 
     //usare gli stream con stream.filter()-> incontrare una determinata condizone
     public List<User> findUserByAFilter(List<User> users){
@@ -141,7 +76,16 @@ public class UserDAO {
         return !(user.getName().equals("Lorenzo") || (user.getSurname().equals("Gradaschi")));
     }
 
+    public boolean isUserInNstedStream(List<Event> events, List<User> users){
+        return events.stream().anyMatch(event -> users.stream().anyMatch(user -> user.getName().equals(event.getUser().getName())));
+    }
 
+    public boolean eventsThatDoNotContainsUsersInList(List<Event> events, List<User> users){
+        return events.stream().allMatch(event -> users.stream().noneMatch(user -> user.getName().equals(event.getUser().getName())));
+    }
 
-
+    //filtro nella lista degli utenti un utente DENTRO UNO STREAM DI EVENTI CHE NON DEVE ESISTERE un utente uguale all'utente filtrato e lo converto in lista
+    public List<User> userWithoutEvents(List<User> users, List<Event> events){
+        return users.stream().filter(user -> events.stream().noneMatch(event -> event.getUser().getName().equals(user.getName()))).collect(Collectors.toList());
+    }
 }
