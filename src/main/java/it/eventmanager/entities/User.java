@@ -33,6 +33,14 @@ public class User extends PanacheEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
     /**
      * per l'annotazione JPA @OneToMany, devo dire qual'è la tabella che mappa la tabella principale
      * sopra l'attributo della classe

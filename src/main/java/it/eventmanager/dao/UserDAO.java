@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.jboss.resteasy.annotations.Query;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ import static io.quarkus.hibernate.orm.panache.Panache.getEntityManager;
 //quindi simulo quello che farebbe per davvero una connessione con JDBC e dietro i prepared statements.
 @ApplicationScoped
 public class UserDAO {
+
+    int Public;
 
     public List<User> findAll(){
         return User.listAll();
@@ -88,4 +91,9 @@ public class UserDAO {
     public List<User> userWithoutEvents(List<User> users, List<Event> events){
         return users.stream().filter(user -> events.stream().noneMatch(event -> event.getUser().getName().equals(user.getName()))).collect(Collectors.toList());
     }
+
+    public List<User> eventListsss(List<User> users,  List<Event> events){
+        return users.stream().filter(user -> events.stream().anyMatch(event -> event.getStartDate().equals(LocalDate.now()))).collect(Collectors.toList());
+    }
+
 }

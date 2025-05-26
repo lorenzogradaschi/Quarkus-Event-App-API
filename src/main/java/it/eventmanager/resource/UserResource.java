@@ -136,5 +136,4 @@ public class UserResource extends PanacheEntityBase {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
-
 }

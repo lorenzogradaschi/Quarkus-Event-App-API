@@ -2,6 +2,9 @@ package it.eventmanager.utilmapper;
 
 import it.eventmanager.dto.UserDTO;
 import it.eventmanager.entities.User;
+import org.h2.value.ValueClob;
+
+import java.util.List;
 
 public class UserMapper {
 
@@ -30,3 +33,4 @@ public class UserMapper {
         return userDTO;
     }
 }
+
