@@ -217,6 +217,14 @@ class GenericTestsForFun {
                 System.out.println("Email non è nulla all'utente numero" + intero);
             }
         });
+
+        System.out.println(checkPalindrome("anna"));
+    }
+
+    public static boolean checkPalindrome(String input){
+        StringBuilder stringBuilder = new StringBuilder(input);
+        StringBuilder reversed = stringBuilder.reverse();
+        return input.contentEquals(reversed);
     }
 
     public List<List<Integer>> raggruppaPerSomma(List<Integer> input) {
@@ -280,10 +288,6 @@ class GenericTestsForFun {
             }
         }
         return c;
-    }
-
-    public static boolean checkPalindrome2(String input) {
-        return input.contentEquals(new StringBuilder(input).reverse());
     }
 
     public boolean isValidJson(String jsonString) throws JsonProcessingException {
